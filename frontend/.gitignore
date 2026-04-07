@@ -47,3 +47,6 @@ next-env.d.ts
 # AI assistant hints (local only; not committed)
 CLAUDE.md
 AGENTS.md
+
+# WordPress / static export reference (local only)
+reference.html
