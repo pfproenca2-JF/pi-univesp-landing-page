@@ -34,3 +34,17 @@ logs/
 *.local
 tmp/
 temp/
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+*.egg-info/
+dist/
+.pytest_cache/
+
+# Firebase
+serviceAccountKey.json
+serviceAccountKey*.json

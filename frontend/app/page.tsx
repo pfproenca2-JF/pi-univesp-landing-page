@@ -1,10 +1,21 @@
+import Image from "next/image";
+import { getServices, getAssets, assetsByCategory } from "@/lib/api";
+
 const nav = [
   { href: "#contato", label: "Contato" },
   { href: "#servicos", label: "Serviços" },
   { href: "#sobre", label: "Sobre" },
 ];
 
-export default function Home() {
+export default async function Home() {
+  const [services, assets] = await Promise.all([
+    getServices().catch(() => []),
+    getAssets().catch(() => []),
+  ]);
+
+  const byCategory = assetsByCategory(assets);
+  const icons = byCategory["icons"] ?? [];
+
   return (
     <>
       <header className="bg-[#c92929] px-6 py-6">
@@ -45,15 +56,21 @@ export default function Home() {
                 Saiba mais
               </a>
             </div>
-            <div className="rounded-lg border border-zinc-200 bg-white p-8 text-zinc-500 shadow-sm">
-              <p className="text-sm leading-relaxed">
-                Conteúdo completo da página exportada está em{" "}
-                <code className="rounded bg-zinc-100 px-1.5 py-0.5 text-xs text-zinc-700">
-                  reference.html
-                </code>{" "}
-                na raiz deste projeto — use como guia ao migrar seções e imagens.
-              </p>
-            </div>
+
+            {icons.length > 0 && (
+              <div className="flex flex-wrap items-center justify-center gap-6 rounded-lg border border-zinc-200 bg-white p-8 shadow-sm">
+                {icons.map((asset) => (
+                  <Image
+                    key={asset.id}
+                    src={asset.url}
+                    alt={asset.name}
+                    width={48}
+                    height={48}
+                    className="opacity-60"
+                  />
+                ))}
+              </div>
+            )}
           </div>
         </section>
 
@@ -77,14 +94,30 @@ export default function Home() {
           id="servicos"
           className="border-b border-zinc-200 bg-zinc-50 px-6 py-16"
         >
-          <div className="mx-auto max-w-3xl space-y-4 text-center">
-            <h2 className="text-2xl font-semibold text-zinc-900">
-              Segurança contra incêndios: expertise e dedicação
-            </h2>
-            <p className="text-zinc-600">
-              Cards de serviços (AVCB, CLCB, laudos, consultoria) e imagens
-              podem ser portados do HTML de referência.
-            </p>
+          <div className="mx-auto max-w-6xl space-y-10">
+            <div className="space-y-4 text-center">
+              <h2 className="text-2xl font-semibold text-zinc-900">
+                Segurança contra incêndios: expertise e dedicação
+              </h2>
+            </div>
+
+            {services.length > 0 && (
+              <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+                {services.map((svc) => (
+                  <li
+                    key={svc.id}
+                    className="rounded-lg border border-zinc-200 bg-white p-6 shadow-sm"
+                  >
+                    <h3 className="mb-2 font-semibold text-zinc-900">
+                      {svc.title}
+                    </h3>
+                    <p className="text-sm leading-relaxed text-zinc-600">
+                      {svc.description}
+                    </p>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
         </section>
 
