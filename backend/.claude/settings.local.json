@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(.venv/Scripts/pip install *)",
+      "Bash(.venv/Scripts/pytest tests/ -v)",
+      "Bash(curl -s http://localhost:8000/api/health)",
+      "Bash(curl -s http://localhost:8000/api/assets)",
+      "Bash(python3 -m json.tool)"
+    ]
+  }
+}
